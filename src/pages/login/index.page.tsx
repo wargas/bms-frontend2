@@ -72,7 +72,6 @@ export function Component() {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            {JSON.stringify(formState)}
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <FieldGroup>
                                     <Field>

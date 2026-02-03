@@ -3,18 +3,25 @@ import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useForm } from "react-hook-form";
 
 export function Component() {
+    const { register, handleSubmit, setValue } = useForm<{ tipo: string }>()
+
+    function onSubmit(data: {tipo:string}) {
+        console.log(data)
+    }
     return (
         <div>
-            <div className="grid grid-cols-12 gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-4">
                 <Field className="col-span-2">
                     <FieldLabel>Tipo</FieldLabel>
-                    <ToggleGroup variant={'outline'} type="single">
-                        <ToggleGroupItem className="flex-1" value="f">Física</ToggleGroupItem>
-                        <ToggleGroupItem className="flex-1" value="j">Jurídica</ToggleGroupItem>
+                    <ToggleGroup defaultValue="f" variant={'outline'} type="single">
+                        <ToggleGroupItem onClick={() => setValue('tipo', 'f')} className="flex-1" value="f">Física</ToggleGroupItem>
+                        <ToggleGroupItem onClick={() => setValue('tipo', 'j')} className="flex-1" value="j">Jurídica</ToggleGroupItem>
                     </ToggleGroup >
                 </Field>
+                <input {...register('tipo')} type="hidden"  />
 
                 <Field className="col-span-10">
                     <FieldLabel>Nome</FieldLabel>
@@ -37,12 +44,12 @@ export function Component() {
                     <Input />
                 </Field>
                 <div className="col-span-12 pt-4 flex justify-end">
-                    <Button>
-                        <Spinner />
+                    <Button type="submit">
+                        {/* <Spinner /> */}
                         Salvar Cliente
-                        </Button>
+                    </Button>
                 </div>
-            </div>
+            </form>
         </div>
     )
 } 
