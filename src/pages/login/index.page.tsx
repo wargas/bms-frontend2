@@ -15,21 +15,38 @@ import {
 import { Input } from '@/components/ui/input'
 import { useTheme } from '@/components/theme-provider'
 import { MoonIcon, SunIcon } from 'lucide-react'
-import {  useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import { useState } from 'react'
 import { Spinner } from '@/components/ui/spinner'
+import { useForm, type SubmitHandler } from "react-hook-form"
+import { useLocalStorage } from "usehooks-ts";
+
+import Api from '@/lib/api'
+
+type Inputs = {
+    email: string,
+    password: string
+}
 
 export function Component() {
 
+    const [, setToken] = useLocalStorage('auth_token', '')
+
     const { setTheme, theme } = useTheme()
-    const [loading, setLoading] = useState(false)
+
+    const { register, handleSubmit, formState } = useForm<Inputs>()
+
     const navigate = useNavigate()
-    
-    function login() {
-        setLoading(true)
-        setTimeout(() => {
-            navigate('/dashboard')
-        }, 1000)
+
+    const onSubmit: SubmitHandler<Inputs> = async values => {
+        const { data } = await Api.post('/login', values)
+
+        if ("token" in data) {
+            setToken(data.token as "");
+            return navigate("/dashboard", { state: data });
+        }
+        alert('erro ao fazer login')
+
     }
 
     return <div>
@@ -56,15 +73,13 @@ export function Component() {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form>
+                            {JSON.stringify(formState)}
+                            <form onSubmit={handleSubmit(onSubmit)}>
                                 <FieldGroup>
                                     <Field>
                                         <FieldLabel htmlFor="email">Email</FieldLabel>
                                         <Input
-                                            id="email"
-                                            type="email"
-                                            placeholder="m@example.com"
-                                            required
+                                            {...register('email')}
                                         />
                                     </Field>
                                     <Field>
@@ -77,13 +92,13 @@ export function Component() {
                                                 Esqueceu a senha?
                                             </a>
                                         </div>
-                                        <Input id="password" type="password" required />
+                                        <Input  {...register('password')} type="password" required />
                                     </Field>
                                     <Field>
-                                        <Button onClick={login} type="submit">
-                                            <Spinner className={cn({'hidden':!loading})} />
+                                        <Button type="submit">
+                                            <Spinner className={cn({ 'hidden': !formState.isLoading })} />
                                             Login</Button>
-                                       
+
                                     </Field>
                                 </FieldGroup>
                             </form>

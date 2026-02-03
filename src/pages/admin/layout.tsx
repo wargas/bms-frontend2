@@ -1,18 +1,51 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarProvider, SidebarTrigger, } from "@/components/ui/sidebar";
 import menuItems from "@/config/menu";
 import { ItemMenu } from "@/components/menu-item";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { NavUser } from "@/components/nav-user";
 import { Combobox, ComboboxInput } from "@/components/ui/combobox";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { useEffect, useState } from "react";
+import Api from "@/lib/api";
+import { useLocalStorage } from "usehooks-ts";
 
 
 export function Component() {
 
     const { theme, setTheme } = useTheme()
+    const [user, setUser] = useState<any>(null)
+    const { pathname } = useLocation()
+    const [token] = useLocalStorage('auth_token', '')
+    const navigation = useNavigate()
+
+    async function loadUser() {
+        const { data } = await Api.get('me')
+
+        if ('email' in data) {
+            setUser(data)
+
+            return;
+        }
+
+        navigation('/login')
+    }
+
+    useEffect(() => {
+        if (!token) {
+            navigation('/login')
+        }
+
+        if(!user) {
+            loadUser()
+        }
+    }, [pathname])
+
+    if(!user) {
+        return <div>carregando...</div>
+    }
 
     return <SidebarProvider>
         <Sidebar>
@@ -34,7 +67,7 @@ export function Component() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter className="border-t">
-                <NavUser />
+                <NavUser user={user} />
             </SidebarFooter>
         </Sidebar>
         <main className="flex flex-col w-full">
@@ -65,13 +98,14 @@ export function Component() {
                 </Button>
             </header>
             <div className="p-4">
+
                 <Outlet />
             </div>
         </main>
     </SidebarProvider>;
 }
 
-export function ErrorBoundary(props:any) {
+export function ErrorBoundary(props: any) {
     return <div>Ocorreu um erro
         {JSON.stringify(props)}
     </div>

@@ -36,14 +36,10 @@ type User = {
   avatar: string
 }
 
-export function NavUser() {
+export function NavUser({user}:{user:User}) {
   const { isMobile } = useSidebar()
 
-  const user: User = {
-    name: 'Wargas Teixeira',
-    email: 'teixeira.wargas@gmail.com',
-    avatar: 'https://avatars.githubusercontent.com/u/2016573?v=4'
-  }
+  
 
   return (
     <SidebarMenu>
