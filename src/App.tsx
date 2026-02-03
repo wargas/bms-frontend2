@@ -1,9 +1,12 @@
+import { AppRoutes } from "./components/app-routes";
+import { ThemeProvider } from "./components/theme-provider";
+
+
+
 export function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="font-medium">Hello World</div>
-    </div>
-  )
+    return <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <AppRoutes />
+    </ThemeProvider>
 }
 
-export default App
+export default App;
