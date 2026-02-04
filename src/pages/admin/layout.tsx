@@ -70,8 +70,8 @@ export function Component() {
                 <NavUser user={user} />
             </SidebarFooter>
         </Sidebar>
-        <main className="flex flex-col w-full">
-            <header className="border-b h-14 flex items-center px-4 gap-4">
+        <main className="flex flex-col w-full h-screen overflow-hidden relative pt-14">
+            <header className="border-b h-14 flex items-center px-4 gap-4 absolute top-0 left-0 right-0">
                 <SidebarTrigger />
                 <Breadcrumb>
                     <BreadcrumbList>
@@ -97,7 +97,7 @@ export function Component() {
                     {theme == 'light' && <SunIcon />}
                 </Button>
             </header>
-            <div className="p-4">
+            <div className="p-4 absolute top-14 left-0 right-0 bottom-0 overflow-y-auto">
 
                 <Outlet />
             </div>

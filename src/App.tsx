@@ -1,5 +1,8 @@
 import { AppRoutes } from "./components/app-routes";
 import { ThemeProvider } from "./components/theme-provider";
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
+
+ModuleRegistry.registerModules([AllCommunityModule])
 import {
     QueryClient,
     QueryClientProvider,
