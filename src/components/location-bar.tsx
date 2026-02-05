@@ -15,6 +15,9 @@ export function LocationBar({ children }: ComponentProps<"div">) {
                 })
             }
         })
+
+        console.log("#####\n");
+        console.log(items)
         
         app.setBreadcrumb(items)
     }, [])

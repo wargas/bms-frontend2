@@ -22,7 +22,7 @@ export function Component() {
     const [token] = useLocalStorage('auth_token', '')
     const navigation = useNavigate()
     const { breadcrumb } = useApp()
-    const app = useApp()
+    // const app = useApp()
 
     async function loadUser() {
         const { data } = await Api.get('me')
@@ -37,7 +37,7 @@ export function Component() {
     }
 
     useEffect(() => {
-        app.setBreadcrumb([])
+        // app.setBreadcrumb([])
         if (!token) {
             navigation('/login')
         }
@@ -81,7 +81,7 @@ export function Component() {
                     <BreadcrumbList>
                         {breadcrumb.map(b => (
                             <>
-                                <BreadcrumbItem>
+                                <BreadcrumbItem key={b.label+b.url}>
                                     {b.url && (
                                         <BreadcrumbLink asChild>
                                             <Link to={b.url}>{b.label}</Link>
