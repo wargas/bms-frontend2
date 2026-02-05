@@ -1,6 +1,6 @@
 import { AppRoutes } from "./components/app-routes";
 import { ThemeProvider } from "./components/theme-provider";
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'; 
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 ModuleRegistry.registerModules([AllCommunityModule])
 import {
@@ -8,6 +8,7 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query'
 import { defaultQueryFn } from "./lib/api";
+import { AppProvider } from "./components/app-provider";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -21,11 +22,13 @@ const queryClient = new QueryClient({
 
 export function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-                <AppRoutes />
-            </ThemeProvider>
-        </QueryClientProvider>
+        <AppProvider>
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+                    <AppRoutes />
+                </ThemeProvider>
+            </QueryClientProvider>
+        </AppProvider>
     )
 
 }

@@ -11,7 +11,7 @@ const routes = [{
       children: [],
     },{
       path: '/dashboard',
-      lazy: () => import('@/pages/admin/dashboard.page'), 
+      lazy: () => import('@/pages/admin/dashboard/index.page'), 
       children: [],
     },{
       path: '/*',

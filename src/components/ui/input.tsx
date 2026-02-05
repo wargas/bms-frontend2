@@ -1,10 +1,28 @@
 import * as React from "react"
-
+import VMasker from 'vanilla-masker'
 import { cn } from "@/lib/utils"
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+
+function Input({ className, isDate = false, money = false, onChange = () => { }, mask, type, ...props }: { isDate?: boolean, mask?: string, money?: boolean } & React.ComponentProps<"input">) {
+
+
+  function changeEvent(event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>): void {
+    if (money) {
+      event.target.value = VMasker.toMoney(event.target.value)
+    }
+    if (mask) {
+      event.target.value = VMasker.toPattern(event.target.value, mask);
+    }
+    onChange(event)
+  }
+
+  if (isDate) {
+    
+  }
+
   return (
     <input
+      onChange={changeEvent}
       type={type}
       data-slot="input"
       className={cn(

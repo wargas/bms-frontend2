@@ -11,6 +11,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import { useEffect, useState } from "react";
 import Api from "@/lib/api";
 import { useLocalStorage } from "usehooks-ts";
+import { useApp } from "@/components/app-provider";
 
 
 export function Component() {
@@ -20,6 +21,8 @@ export function Component() {
     const { pathname } = useLocation()
     const [token] = useLocalStorage('auth_token', '')
     const navigation = useNavigate()
+    const { breadcrumb } = useApp()
+    const app = useApp()
 
     async function loadUser() {
         const { data } = await Api.get('me')
@@ -34,16 +37,17 @@ export function Component() {
     }
 
     useEffect(() => {
+        app.setBreadcrumb([])
         if (!token) {
             navigation('/login')
         }
 
-        if(!user) {
+        if (!user) {
             loadUser()
         }
     }, [pathname])
 
-    if(!user) {
+    if (!user) {
         return <div>carregando...</div>
     }
 
@@ -75,17 +79,33 @@ export function Component() {
                 <SidebarTrigger />
                 <Breadcrumb>
                     <BreadcrumbList>
-                        <BreadcrumbItem>
-                            <BreadcrumbLink>
-                                <Link to={'/dashboard'}>Dashboard</Link>
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
+                        {breadcrumb.map(b => (
+                            <>
+                                <BreadcrumbItem>
+                                    {b.url && (
+                                        <BreadcrumbLink asChild>
+                                            <Link to={b.url}>{b.label}</Link>
+                                        </BreadcrumbLink>
+                                    )}
+                                    {!b.url && (
+                                        <BreadcrumbItem >
+                                            {b.label}
+                                        </BreadcrumbItem>
+                                    )}
+
+                                </BreadcrumbItem>
+                                {(breadcrumb.length - 1) > breadcrumb.indexOf(b) && (
+                                    <BreadcrumbSeparator />
+                                )}
+                            </>
+                        ))}
+
+                        {/* <BreadcrumbSeparator />
                         <BreadcrumbItem>
                             <Link to={'/clientes'}>Clientes</Link>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
-                        <BreadcrumbItem>Cadastro</BreadcrumbItem>
+                        <BreadcrumbItem>Cadastro</BreadcrumbItem> */}
                     </BreadcrumbList>
                 </Breadcrumb>
                 <div className="ml-auto"></div>
