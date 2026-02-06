@@ -94,7 +94,7 @@ export function Component() {
                                     </Field>
                                     <Field>
                                         <Button type="submit">
-                                            <Spinner className={cn({ 'hidden': !formState.isLoading })} />
+                                            <Spinner className={cn({ 'hidden': !formState.isSubmitting })} />
                                             Login</Button>
 
                                     </Field>

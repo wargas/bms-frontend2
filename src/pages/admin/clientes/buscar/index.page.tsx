@@ -14,9 +14,10 @@ export function Component() {
 
     const [selecteds, setSelecteds] = useState<any[]>([])
     const navigate = useNavigate()
+    const [search, setSearch] = useState<{ nome: string, documento: string }>()
 
     const clientes = useQuery<any[]>({
-        queryKey: ['clientes?nome=wargas']
+        queryKey: [`clientes?nome=${search?.nome}&documento=${search?.documento}`]
     })
 
     // Column Definitions: Defines the columns to be displayed.
@@ -32,6 +33,12 @@ export function Component() {
         setSelecteds(ev.selectedNodes?.map(n => n.data) || [])
     }, [])
 
+    function action(data: FormData) {
+        setSearch({
+            nome: data.get('nome')?.toString() ?? '',
+            documento: data.get('documento')?.toString() ?? ''
+        })
+    }
 
 
     return (
@@ -41,15 +48,15 @@ export function Component() {
                 <LocationItem url="/clientes">Clientes</LocationItem>
                 <LocationItem>Buscar</LocationItem>
             </LocationBar>
-            <form action="" className="grid-cols-6 grid gap-4">
+            <form action={action} className="grid-cols-6 grid gap-4">
                 <Field className="col-span-1">
                     <FieldLabel>CPF/CNPJ</FieldLabel>
-                    <Input />
+                    <Input defaultValue={search?.documento ?? ''} name="documento" />
                 </Field>
 
                 <Field className="col-span-4">
                     <FieldLabel>Nome</FieldLabel>
-                    <Input />
+                    <Input defaultValue={search?.nome ?? ''} name="nome" />
                 </Field>
                 <Field className="col-span-1">
                     <FieldLabel>&nbsp;</FieldLabel>
@@ -64,7 +71,11 @@ export function Component() {
             </form>
 
             <div className="mt-4 flex-1">
-                <Table onSelectionChanged={onSelectionChanged} rowSelection={{ mode: 'multiRow' }} rowData={clientes.data || []} columnDefs={colDefs} />
+                <Table
+
+                    loading={clientes.isLoading} onSelectionChanged={onSelectionChanged}
+                    rowSelection={{ mode: 'multiRow', enableClickSelection: true }}
+                    rowData={clientes.data || []} columnDefs={colDefs} />
             </div>
 
         </div>

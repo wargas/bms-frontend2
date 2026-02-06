@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { forwardRef } from "react"
 
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -111,18 +112,28 @@ function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
   )
 }
 
-function InputGroupInput({
-  className,
-  ...props
-}:{ mask?: string, money?: boolean } & React.ComponentProps<"input">) {
+type InputGroupInputProps =
+  {
+    mask?: string;
+    money?: boolean;
+  } & React.ComponentProps<"input">;
+
+const InputGroupInput = forwardRef<
+  HTMLInputElement,
+  InputGroupInputProps
+>(({ className, ...props }, ref) => {
   return (
     <Input
+      ref={ref}
       data-slot="input-group-control"
-      className={cn("rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 aria-invalid:ring-0 dark:bg-transparent flex-1", className)}
+      className={cn(
+        "rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 aria-invalid:ring-0 dark:bg-transparent flex-1",
+        className
+      )}
       {...props}
     />
-  )
-}
+  );
+});
 
 function InputGroupTextarea({
   className,

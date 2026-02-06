@@ -1,6 +1,8 @@
 import { AppRoutes } from "./components/app-routes";
 import { ThemeProvider } from "./components/theme-provider";
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { ToastContainer } from 'react-toastify';
+
 
 ModuleRegistry.registerModules([AllCommunityModule])
 import {
@@ -9,6 +11,7 @@ import {
 } from '@tanstack/react-query'
 import { defaultQueryFn } from "./lib/api";
 import { AppProvider } from "./components/app-provider";
+import { ContainerModal } from "./components/modal/modal-container";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -28,6 +31,8 @@ export function App() {
                     <AppRoutes />
                 </ThemeProvider>
             </QueryClientProvider>
+            <ToastContainer />
+            <ContainerModal />
         </AppProvider>
     )
 
