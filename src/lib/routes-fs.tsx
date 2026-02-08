@@ -10,10 +10,6 @@ const routes = [{
       lazy: () => import('@/pages/admin/index.page'), 
       children: [],
     },{
-      path: '/dashboard',
-      lazy: () => import('@/pages/admin/dashboard/index.page'), 
-      children: [],
-    },{
       path: '/*',
       lazy: () => import('@/pages/admin/404.page'), 
       children: [],
@@ -684,6 +680,10 @@ const routes = [{
     },{
       path: '/clientes/buscar',
       lazy: () => import('@/pages/admin/clientes/buscar/index.page'), 
+      children: [],
+    },{
+      path: '/clientes/:id/detalhe',
+      lazy: () => import('@/pages/admin/clientes/[id]/detalhe.page'), 
       children: [],
     },{
       path: '/chatbots',

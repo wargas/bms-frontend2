@@ -65,7 +65,7 @@ export function Component() {
                 <div className="col-span-6 flex pt-4 border-t gap-2 justify-end">
 
                     <Button variant={'outline'}>Cadastrar</Button>
-                    <Button onClick={() => navigate(`/clientes/${selecteds[0]?.id}`)} disabled={selecteds.length != 1} variant={'outline'}>Detalhar</Button>
+                    <Button onClick={() => navigate(`/clientes/${selecteds[0]?.id}/detalhe`)} disabled={selecteds.length != 1} variant={'outline'}>Detalhar</Button>
                     <Button disabled={selecteds.length != 1} variant={'outline'}>Editar</Button>
                 </div>
             </form>
@@ -73,9 +73,12 @@ export function Component() {
             <div className="mt-4 flex-1">
                 <Table
 
-                    loading={clientes.isLoading} onSelectionChanged={onSelectionChanged}
+                    loading={clientes.isLoading} 
+                    onRowDoubleClicked={ev => navigate(`/clientes/${ev.data.id}/detalhe`)}
+                    onSelectionChanged={onSelectionChanged}
                     rowSelection={{ mode: 'multiRow', enableClickSelection: true }}
-                    rowData={clientes.data || []} columnDefs={colDefs} />
+                    rowData={clientes.data || []} 
+                    columnDefs={colDefs} />
             </div>
 
         </div>

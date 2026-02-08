@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { NavUser } from "@/components/nav-user";
 import { Combobox, ComboboxInput } from "@/components/ui/combobox";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { useEffect, useState } from "react";
 import Api from "@/lib/api";
 import { useLocalStorage } from "usehooks-ts";
@@ -88,9 +88,9 @@ export function Component() {
                                         </BreadcrumbLink>
                                     )}
                                     {!b.url && (
-                                        <BreadcrumbItem >
+                                        <BreadcrumbPage >
                                             {b.label}
-                                        </BreadcrumbItem>
+                                        </BreadcrumbPage>
                                     )}
 
                                 </BreadcrumbItem>
