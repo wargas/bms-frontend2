@@ -12,15 +12,17 @@ import {
     FieldGroup,
     FieldLabel,
 } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
 import { useTheme } from '@/components/theme-provider'
-import { MoonIcon, SunIcon } from 'lucide-react'
+import { Eye, Mail, MoonIcon, RectangleEllipsis, SunIcon } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { Spinner } from '@/components/ui/spinner'
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { useLocalStorage } from "usehooks-ts";
 
 import Api from '@/lib/api'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 type Inputs = {
     email: string,
@@ -28,6 +30,8 @@ type Inputs = {
 }
 
 export function Component() {
+
+    const [showPass, setShowPass] = useState(false)
 
     const [, setToken] = useLocalStorage('auth_token', '')
 
@@ -44,13 +48,12 @@ export function Component() {
             setToken(data.token as "");
             return navigate("/dashboard", { state: data });
         }
-        alert('erro ao fazer login')
-
+        toast.error(`Erro ao fazer o login`)
     }
 
     return <div>
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-            <div className="w-full max-w-120">
+            <div className="w-full max-w-110">
                 <div className={cn("flex flex-col gap-6")}>
                     <div>
                         <h1 className="font-extrabold text-center text-4xl">
@@ -76,9 +79,14 @@ export function Component() {
                                 <FieldGroup>
                                     <Field>
                                         <FieldLabel htmlFor="email">Email</FieldLabel>
-                                        <Input
-                                            {...register('email')}
-                                        />
+                                        <InputGroup>
+                                            <InputGroupInput
+                                                {...register('email')}
+                                            />
+                                            <InputGroupAddon>
+                                                <Mail />
+                                            </InputGroupAddon>
+                                        </InputGroup>
                                     </Field>
                                     <Field>
                                         <div className="flex items-center">
@@ -90,7 +98,17 @@ export function Component() {
                                                 Esqueceu a senha?
                                             </a>
                                         </div>
-                                        <Input  {...register('password')} type="password" required />
+                                        <InputGroup>
+                                            <InputGroupInput  {...register('password')} type={showPass ? 'text' : 'password'} required />
+                                            <InputGroupAddon>
+                                                <RectangleEllipsis />
+                                            </InputGroupAddon>
+                                            <InputGroupAddon align={'inline-end'}>
+                                                <Button type='button' onClick={() => setShowPass(s => !s)} size={'icon-sm'} variant={'ghost'}>
+                                                    <Eye />
+                                                </Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
                                     </Field>
                                     <Field>
                                         <Button type="submit">
