@@ -1,4 +1,4 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarProvider, SidebarTrigger, } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarProvider, SidebarTrigger, SidebarRail } from "@/components/ui/sidebar";
 import menuItems from "@/config/menu";
 import { ItemMenu } from "@/components/menu-item";
 import { Link, Outlet, useLocation, useNavigate } from "react-router";
@@ -73,6 +73,7 @@ export function Component() {
             <SidebarFooter className="border-t">
                 <NavUser user={user} />
             </SidebarFooter>
+            <SidebarRail />
         </Sidebar>
         <main className="flex flex-col w-full h-screen overflow-hidden relative pt-14">
             <header className="border-b h-14 flex items-center px-4 gap-4 absolute top-0 left-0 right-0">
