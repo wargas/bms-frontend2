@@ -52,7 +52,7 @@ export function Component() {
     }
 
     return <SidebarProvider>
-        <Sidebar>
+        <Sidebar collapsible="icon">
             <SidebarHeader className="border-b h-14 flex items-center justify-center">
                 <span className="font-extrabold text-green-600 text-2xl">BITMAX</span>
             </SidebarHeader>
